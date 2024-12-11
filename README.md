@@ -113,7 +113,7 @@ The question about predicting recipe preparation times is practical and widely a
 
 ---
 
-## Step 3: Assessment of Missingness
+## Assessment of Missingness
 
 ### NMAR Analysis
 
@@ -165,7 +165,7 @@ Based on the results of these permutation tests, there is no significant evidenc
 
 ---
 
-## Step 4: Hypothesis Testing
+## Hypothesis Testing
 
 ### Hypothesis Testing Overview
 
@@ -218,7 +218,7 @@ The grouped bar chart above demonstrates that recipes with shorter preparation t
 
 ---
 
-## Step 5: Framing a Prediction Problem
+## Framing a Prediction Problem
 
 ### Prediction Problem
 I aim to predict the **preparation time** (in minutes) for recipes based on their characteristics.
@@ -271,7 +271,7 @@ These insights will guide feature engineering and modeling choices.
 
 ---
 
-## Step 6: Baseline Model
+## Baseline Model
 
 ### Baseline Model Setup
 
@@ -311,3 +311,90 @@ Although the baseline model performs poorly (explaining only 2.85% of the varian
 1. Establishes a minimum performance benchmark.
 2. Confirms intuitive relationships (e.g., more ingredients/steps correlate with longer preparation times).
 3. Highlights the need for more sophisticated models and feature engineering to improve predictive performance.
+
+## Final Model
+
+### Features Added and Their Relevance
+In addition to the original features (`n_ingredients` and `n_steps`), two new features were engineered:
+1. **`ingredients_per_step`**: This feature captures the average number of ingredients used per step. It provides a nuanced understanding of recipe complexity by combining the number of steps and ingredients into a single measure. Recipes with higher `ingredients_per_step` values are likely more intricate, potentially requiring more time per step.
+2. **`calories`**: Extracted from the nutrition information column, calories act as a proxy for the recipe's complexity and richness. Recipes with higher calorie counts might involve more elaborate preparations, influencing preparation time.
+
+These features were chosen because they represent aspects of the data generating process that directly relate to recipe preparation time. By accounting for both complexity and nutritional density, these features improve the model's ability to predict preparation time.
+
+### Modeling Algorithm and Hyperparameter Selection
+The final model used a **Random Forest Regressor**, a versatile and robust ensemble method. Random Forests were selected due to their ability to capture non-linear relationships and interactions between features, which were not captured by the baseline linear regression model.
+
+To optimize the model, a **grid search** with cross-validation was performed, tuning the following hyperparameters:
+- **`max_depth`**: Limited to 10 to prevent overfitting.
+- **`min_samples_split`**: Set to 10 to ensure splits occur only when sufficient data exists.
+- **`n_estimators`**: Fixed at 100 to balance computation time and performance.
+
+These parameters were chosen to enhance generalization while preventing the model from memorizing the training data.
+
+### Performance Comparison
+The final model demonstrated a significant improvement over the baseline:
+- **Test RMSE**: Reduced from 96.90 (baseline) to 89.13.
+- **Test R² Score**: Increased from 0.0285 (baseline) to 0.1781.
+
+These improvements highlight the added value of the engineered features and the non-linear modeling approach.
+
+### Feature Importances
+The importance of each feature in the final model provides further validation:
+- **Calories** (59.28%): The most influential feature, indicating that recipe complexity related to nutritional density plays a significant role in preparation time.
+- **Number of Steps** (16.98%): Suggests that more steps generally correlate with longer preparation times.
+- **Ingredients per Step** (14.39%): Highlights how the interplay of ingredients and steps affects preparation time.
+- **Number of Ingredients** (9.35%): Less influential when compared to the other features but still relevant.
+
+### Conclusion
+The Random Forest model, combined with engineered features, significantly improved prediction accuracy over the baseline. By incorporating domain-specific insights into feature engineering and leveraging an advanced modeling algorithm, the final model provides a robust tool for predicting recipe preparation times.
+
+---
+
+### Fairness Analysis
+
+### Fairness Question
+**Does our model perform worse for complex recipes compared to simple ones?**
+
+#### Groups Analyzed
+- **Group X (Simple Recipes)**: Recipes with 8 or fewer ingredients, representing simpler recipes.
+- **Group Y (Complex Recipes)**: Recipes with more than 8 ingredients, representing more intricate and challenging recipes.
+
+#### Evaluation Metric
+We used **Root Mean Squared Error (RMSE)** as our evaluation metric. RMSE is particularly suited for regression problems as it measures the average magnitude of prediction errors in the same units as the target variable (minutes). A lower RMSE indicates better performance.
+
+#### Hypotheses
+- **Null Hypothesis**: The model is fair; any observed difference in RMSE between simple and complex recipes is due to random chance.  
+- **Alternative Hypothesis**: The model is unfair; RMSE for complex recipes is significantly different from RMSE for simple recipes.
+
+#### Results
+The fairness analysis revealed the following metrics:
+- **RMSE for Simple Recipes**: 84.11 minutes  
+- **RMSE for Complex Recipes**: 95.61 minutes  
+- **Observed Difference in RMSE**: 11.50 minutes  
+- **P-value**: 0.0000  
+
+The p-value was obtained using a permutation test with 1,000 iterations. By randomly shuffling the group labels and recalculating the RMSE difference for each permutation, we generated a distribution of RMSE differences under the null hypothesis. The observed difference (11.50 minutes) lies far outside this distribution, resulting in a p-value of approximately 0. This indicates that the observed difference is highly unlikely to have occurred due to random chance.
+
+#### Interpretation
+The extremely low p-value leads us to reject the null hypothesis in favor of the alternative hypothesis. This means that the model performs significantly worse for **complex recipes** compared to **simple recipes**. The higher RMSE for complex recipes suggests that the model struggles to capture the nuances and intricacies associated with more complex recipes, which often involve more ingredients and potentially non-linear interactions.
+
+#### Importance of Findings
+These results highlight a clear disparity in model performance between simple and complex recipes, which has practical implications:
+1. **Model Limitations**: The findings suggest that the model is biased toward simpler recipes and may not generalize well to more complex ones. This could result from insufficient feature engineering or the model's inability to effectively capture complex relationships within the data.
+2. **User Impact**: For users relying on the model to estimate preparation times for complex recipes, the increased error could lead to frustration or inaccurate expectations. This diminishes the model's usability and fairness for diverse recipe types.
+3. **Future Improvements**: To address this bias, future iterations of the model should incorporate more advanced features or techniques, such as natural language processing to extract richer information from recipe descriptions and steps, or ensemble methods to better handle non-linear interactions.
+
+#### Visualization
+The histogram below illustrates the distribution of RMSE differences generated through the permutation test, with the observed difference (11.50 minutes) marked by vertical red lines. The observed difference lies far outside the distribution, reinforcing the conclusion of significant disparity.
+
+**Visualization:**
+<iframe
+  src="assets/fairness_test.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+---
+
+
