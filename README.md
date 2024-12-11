@@ -443,6 +443,16 @@ We used **Root Mean Squared Error (RMSE)** as our evaluation metric. RMSE is par
 - **Null Hypothesis**: The model is fair; any observed difference in RMSE between simple and complex recipes is due to random chance.  
 - **Alternative Hypothesis**: The model is unfair; RMSE for complex recipes is significantly different from RMSE for simple recipes.
 
+
+**Visualization:**
+<iframe
+  src="assets/fairness_test.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+
 #### Results
 The fairness analysis revealed the following metrics:
 - **RMSE for Simple Recipes**: 84.11 minutes  
@@ -463,14 +473,6 @@ These results highlight a clear disparity in model performance between simple an
 
 #### Visualization
 The histogram below illustrates the distribution of RMSE differences generated through the permutation test, with the observed difference (11.50 minutes) marked by vertical red lines. The observed difference lies far outside the distribution, reinforcing the conclusion of significant disparity.
-
-**Visualization:**
-<iframe
-  src="assets/fairness_test.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
 
 ---
 
