@@ -1,7 +1,0 @@
-remote_theme: pages-themes/cayman@v0.2.0
-plugins:
-- jekyll-remote-theme # add this line to the plugins list if you already have one
-title: "Sweet Success: Analyzing Recipe Ratings with Data Science"
-description: "An in-depth analysis of food recipes using data science techniques."
-author: "Timothy Kam"
-email: tskam@ucsd.edu
