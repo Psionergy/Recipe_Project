@@ -1,6 +1,5 @@
 # Sweet Success: Analyzing Recipe Ratings with Data Science
 
-## Recipe Analysis Project
 **Author**: Timothy Kam  
 **Date**: December 9, 2024  
 
@@ -68,8 +67,8 @@ To prepare the datasets for analysis, several data cleaning steps were undertake
 
 ### Data Exploration
 
-#### Distribution of Ratings
-The majority of recipes receive ratings of 4 or 5, indicating a positive user bias.
+#### Univariate Analysis
+The distribution of ratings indicates a strong user preference for highly-rated recipes, with the majority of ratings concentrated at 4 and 5 stars. This reflects a generally positive user experience and suggests that users are more likely to leave ratings for recipes they enjoy.
 
 **Visualization:**
 <iframe
@@ -80,7 +79,7 @@ The majority of recipes receive ratings of 4 or 5, indicating a positive user bi
 ></iframe>
 
 #### Distribution of Preparation Times
-Most recipes take less than 60 minutes to prepare, with a sharp decline in frequency as preparation time increases.
+The distribution of preparation times shows that most recipes take less than 60 minutes to prepare, highlighting a user preference for efficiency in cooking. Longer preparation times are less frequent, suggesting that users value convenience and practicality when choosing recipes.
 
 **Visualization:**
 <iframe
@@ -91,7 +90,7 @@ Most recipes take less than 60 minutes to prepare, with a sharp decline in frequ
 ></iframe>
 
 #### Distribution of Number of Ingredients
-Recipes commonly use between 5 and 15 ingredients, with few exceeding 20.
+The distribution of the number of ingredients reveals that recipes with 5 to 15 ingredients are the most common. This balance between variety and simplicity indicates that users are drawn to recipes that are neither overly complex nor too basic.
 
 **Visualization:**
 <iframe
@@ -103,6 +102,49 @@ Recipes commonly use between 5 and 15 ingredients, with few exceeding 20.
 
 ---
 
+### Bivariate Analysis
+For the bivariate analysis, we examined the relationships between pairs of columns to identify meaningful associations. First, we analyzed
+the relationship between preparation time and the number of ingredients using a scatter plot. This plot shows that recipes with more 
+ingredients tend to require more preparation time, though the correlation weakens as preparation time increases. Second, we explored how 
+average ratings have changed over time using a line chart. This visualization reveals that recipe ratings have remained consistently high 
+across years, with only slight fluctuations. These analyses provide insights into how different features of the recipes interact and inform 
+potential hypotheses for further investigation. 
+
+In addition to examining the scatterplot of preparation time against the number of ingredients, we explored the average preparation time 
+for each number of ingredients. The resulting bar chart highlights a trend where recipes with fewer ingredients generally require less 
+preparation time. However, there are noticeable spikes for recipes with either very few (1-2) or many ingredients (around 25), suggesting 
+potential outliers or specific recipe types driving these averages. This analysis complements the scatterplot by providing aggregate-level 
+insights into how the complexity of a recipe, as measured by its ingredients, correlates with the time required for preparation.
+
+## Recipe Preparation Time vs. Number of Ingredients
+<iframe
+  src="assets/prep_time_vs_ingredients.html"
+  width="800"
+  height="500"
+  frameborder="0"
+></iframe>
+
+
+
+## Distribution of Recipe Ratings Over Time
+<iframe
+  src="assets/ratings_over_time.html"
+  width="800"
+  height="500"
+  frameborder="0"
+></iframe>
+
+
+
+## Average Preparation Time by Number of Ingredients
+<iframe
+  src="assets/ingredients_vs_prep_time.html"
+  width="800"
+  height="500"
+  frameborder="0"
+></iframe>
+
+
 ## Relevance of the Research Question
 
 The question about predicting recipe preparation times is practical and widely applicable:
@@ -110,6 +152,41 @@ The question about predicting recipe preparation times is practical and widely a
 1. **For Everyday Users**: Knowing the estimated time to prepare a recipe helps in meal planning, especially for busy individuals or families.  
 2. **For Recipe Creators**: Identifying key factors influencing preparation time allows them to optimize recipes to suit specific audiences, like those seeking quick meals or more elaborate dishes.  
 3. **For Data Enthusiasts**: This project showcases how exploratory data analysis, feature engineering, and predictive modeling can work together to address a real-world problem.
+
+
+## Interesting Aggregates
+
+This first table illustrates the relationship between preparation time and average recipe ratings. Recipes with the shortest preparation times (0-30 minutes) have the highest average rating (4.70), indicating a strong user preference for quick and simple recipes. As preparation times increase, average ratings gradually decline, with recipes requiring over 240 minutes receiving the lowest average rating (4.59). However, the variation across ranges is relatively small, suggesting that preparation time alone does not significantly influence user satisfaction.
+
+
+### Preparation Time and Average Rating
+
+| Preparation Time Range | Average Rating |
+|-------------------------|----------------|
+| 0-30                   | 4.701580       |
+| 31-60                  | 4.672226       |
+| 61-90                  | 4.679216       |
+| 91-120                 | 4.670676       |
+| 121-150                | 4.663806       |
+| 151-180                | 4.688437       |
+| 181-240                | 4.664046       |
+| 241-300                | 4.594937       |
+
+
+The second table examines how the number of steps in a recipe correlates with its average rating. Recipes with 0-5 steps have the highest average rating (4.71), highlighting a clear preference for straightforward recipes. Interestingly, recipes with 16-20 steps also receive relatively high ratings (4.68), suggesting that users value a balance between simplicity and detail. Despite minor fluctuations, ratings for recipes across step ranges remain close, indicating that the number of steps has only a marginal impact on user preferences.
+
+
+### Steps and Average Rating
+
+| Step Range | Average Rating |
+|------------|----------------|
+| 0-5        | 4.709929       |
+| 6-10       | 4.671119       |
+| 11-15      | 4.669430       |
+| 16-20      | 4.684758       |
+| 21-30      | 4.696182       |
+
+These aggregates are interesting because they reveal user preferences related to recipe complexity and preparation effort. The preparation time analysis highlights a preference for quicker recipes, with ratings decreasing slightly as time increases, which can guide recipe creators aiming to cater to busy users. Similarly, the step-based analysis underscores a preference for simplicity, but also suggests that users appreciate well-structured recipes with moderate complexity, offering valuable insights into the balance between detail and ease of execution.
 
 ---
 
@@ -184,7 +261,7 @@ This analysis aims to determine whether the preparation time of a recipe influen
 
 **Observed Statistic and P-Value**:  
 - **T-Statistic**: 11.2012  
-- **P-Value**: \(4.10 \times 10^{-29}\)  
+- **P-Value**: 0.00
 
 ### Descriptive Statistics
 
